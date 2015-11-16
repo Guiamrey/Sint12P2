@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE Interprete SYSTEM "iml.dtd">
+
+<Interprete>
+    <Nombre>
+        <NombreC>Dani Martin</NombreC>
+        <Id>DaniM</Id>
+    </Nombre>
+
+    <Nacionalidad>español</Nacionalidad>
+
+    <Album tipo="nuevo" temas="3">
+
+        <NombreA>Pequeño</NombreA>
+        <Año>2015</Año>
+
+        <Cancion estilo="pop rock">
+            <NombreT>16 añitos</NombreT>
+            <Duracion>03:55</Duracion>
+
+        </Cancion>
+
+        <Cancion estilo="pop rock">
+            <NombreT>Mi lamento</NombreT>
+            <Duracion>02:57</Duracion>
+            <Version>
+                <Nombre>
+                    <NombreC>Joaquin Sabina</NombreC>
+                    <Id>JSabina</Id>
+                </Nombre>
+                <IML>""</IML>
+            </Version>
+        </Cancion>
+
+        <Cancion estilo="">
+            <NombreT>Shots</NombreT>
+            <Duracion>03:52</Duracion>
+
+        </Cancion>
+
+
+    </Album>
+
+</Interprete>
