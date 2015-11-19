@@ -124,7 +124,6 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
 		out.println("<input type='hidden' name='etapa' value='11'>");
 		out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
-		out.println("<br>");
 		out.println("<input type='radio' checked='' value='Cantante 1' name='interprete'>Cantante 1");
 		out.println("<br>");
 		out.println("<input type='radio' value='Cantante 2' name='interprete'>Cantante 2");
@@ -155,7 +154,6 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='hidden' name='etapa' value='21'>");
 		out.println("<input type='hidden' name='anterior' value='null'>");
 		out.println("<input type='hidden' name='interprete' value='"+req.getParameter("interprete")+"'>");
-
 		out.println("<input type='radio' checked='' value='Album 1' name='album1'>Album 1");
 		out.println("<br>");
 		out.println("<input type='radio' value='Album 2' name='album1'>Album 2");
@@ -220,12 +218,11 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
 		out.println("<input type='hidden' name='etapa' value='12'>");
 		out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
+		out.println("<input type='radio' checked='' value='Anho 1' name='anhio'>Año 1");
 		out.println("<br>");
-		out.println("<input type='radio' checked='' value='Año 1' name='anhio'>Año 1");
+		out.println("<input type='radio' value='Anho 2' name='anhio'>Año 2");
 		out.println("<br>");
-		out.println("<input type='radio' value='Año 2' name='anhio'>Año 2");
-		out.println("<br>");
-		out.println("<input type='radio' value='Año 3' name='anhio'>Año 3");
+		out.println("<input type='radio' value='Anho 3' name='anhio'>Año 3");
 		out.println("<br>");
 		out.println("<input type='radio' value='Todos' name='anhio'>Todos");
 		out.println("<br>");
@@ -336,16 +333,19 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<head>");
 		out.println("<meta charset='utf-8'>");
 		out.println("<link rel='stylesheet' href='iml.css'>");
+		out.println("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>");
 		out.println("<title>Consulta musical</title>");
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<header>");
 		out.println("<h1>Servicio web de consulta musical</h1>");
 		out.println("</header>");
+		out.println("<div>");
 		return;
 	}
 
 	public void imprimirFinal(PrintWriter out){
+		out.println("</div>");
 		out.println("<footer>Creado por Ruth Guimarey Docampo<br>Servicios de Internet. Práctica 2</footer>");
 		out.println("</body>");
 		out.println("</html>");
