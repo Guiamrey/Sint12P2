@@ -1,0 +1,23 @@
+body{
+    background-color: #dad9d9;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+}
+header{
+    background-color: #f56060;
+    border-bottom: 2px solid #353535;
+    height: 25%;
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+}
+header h1{
+    color: #151515;
+    display: block;
+    margin: 20px 30% 25px 30%;
+    width: 40%;
+    text-align: center;
+}
+h3{
+    text-align: center;
+}

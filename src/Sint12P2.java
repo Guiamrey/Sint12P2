@@ -86,13 +86,8 @@ public class Sint12P2 extends HttpServlet{
 
 	public void Inicio(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>Consulta artistas</h1>");
-		out.println("<h1>Selecciona la consulta que desea hacer</h1>");
+		imprimirInicio(out);
+		out.println("<h3>Selecciona la consulta que desea hacer</h3>");
 		out.println("<form method='GET' action='?etapa=1' >");
 		out.println("<input type='hidden' name='etapa' value='10'>");
 		if(req.getParameter("consultainicial")!=null){
@@ -117,21 +112,15 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' value='Enviar' ");
 		out.println("<p>");
 		out.println("</form>");
-		out.println("<hr></hr>");
-		out.println("Ruth Guimarey Docampo");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 	}
 
 	public void etapa11(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>ETAPA 1.1</h1>");
-		out.println("<h2>Cantantes</h2>");
+		imprimirInicio(out);
+		out.println("<h2>ETAPA 1.1</h2>");
+		out.println("<h4>Seleccione el inteprete deseado:</h4>");
 		out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
 		out.println("<input type='hidden' name='etapa' value='11'>");
 		out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
@@ -150,22 +139,17 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
 	public void etapa21(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>ETAPA 2.1</h1>");
-
-
-		out.println("<h2>Cantantes --> Cantante: "+req.getParameter("interprete")+"</h2>");
+		imprimirInicio(out);
+		out.println("<h2>ETAPA 2.1</h2>");
+		out.println("<h3>Cantantes --> Cantante: "+req.getParameter("interprete")+"</h3>");
+		out.println("<h4>Seleccione el álbum deseado:</h4>");
 		out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante="+req.getParameter("interprete")+"' >");
 		out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
 		out.println("<input type='hidden' name='etapa' value='21'>");
@@ -186,23 +170,16 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.anterior.value=11' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
-
-
 	public void resultado1(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>Consulta de informacion</h1>");
-		out.println("<h2>Cantantes --> Cantante: "+req.getParameter("interprete")+"; Álbum: "+req.getParameter("album1")+"</h2>");
-		out.println("<h3>Resultado de tu consulta:</h3>");
+		imprimirInicio(out);
+		out.println("<h3>Cantantes --> Cantante: "+req.getParameter("interprete")+"; Álbum: "+req.getParameter("album1")+"</h3>");
+		out.println("<h4>Resultado de su consulta:</h4>");
 		out.println("<br>");
 		out.println("<ul>");
 		
@@ -224,8 +201,8 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.anterior.value=21' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
@@ -236,13 +213,10 @@ public class Sint12P2 extends HttpServlet{
 
 	public void etapa12(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>ETAPA 1.2</h1>");
-		out.println("<h2>Canciones</h2>");
+		imprimirInicio(out);
+		out.println("<h2>ETAPA 1.2</h2>");
+		out.println("<h3>Lista de canciones por estilo</h3>");
+		out.println("<h4>Seleccione el año deseado:</h4>");
 		out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
 		out.println("<input type='hidden' name='etapa' value='12'>");
 		out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
@@ -261,20 +235,17 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
 	public void etapa22(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>ETAPA 2.2</h1>");
-		out.println("<h2>Canciones --> Año: "+req.getParameter("anhio")+"</h2>");
+		imprimirInicio(out);
+		out.println("<h2>ETAPA 2.2</h2>");
+		out.println("<h3>Canciones --> Año: "+req.getParameter("anhio")+"</h3>");
+		out.println("<h4>Seleccione el álbum deseado:</h4>");
 		out.println("<form method='GET' action='?etapa=32&consultainicial=Canciones&anio="+req.getParameter("anhio")+"' >");
 		out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
 		out.println("<input type='hidden' name='etapa' value='22'>");
@@ -297,20 +268,17 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.anterior.value=12' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
 	public void etapa32(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>ETAPA 3.2</h1>");
-		out.println("<h2>Canciones --> Año: "+req.getParameter("anhio")+"; Álbum: "+req.getParameter("album2")+"</h2>");
+		imprimirInicio(out);
+		out.println("<h2>ETAPA 3.2</h2>");
+		out.println("<h3>Canciones --> Año: "+req.getParameter("anhio")+"; Álbum: "+req.getParameter("album2")+"</h3>");
+		out.println("<h4>Seleccione el estilo deseado:</h4>");
 		out.println("<form method='GET' action='?etapa=42&consultainicial=Canciones&anio="+req.getParameter("anhio")+"album="+req.getParameter("album2")+"' >");
 		out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
 		out.println("<input type='hidden' name='anhio' value='"+req.getParameter("anhio")+"'>");
@@ -334,21 +302,16 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.anterior.value=22' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
-		out.println("</body>");
-		out.println("</html>");
+		imprimirFinal(out);
+
 
 	}
 
 	public void resultado2(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Consulta</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>Consulta de informacion</h1>");
-		out.println("<h2>Canciones --> Año: "+req.getParameter("anhio")+"; Álbum: "+req.getParameter("album2")+"; Estilo: "+req.getParameter("estilo")+"</h2>");
-		out.println("<h3>Resultado de tu consulta:</h3>");
+		imprimirInicio(out);
+		out.println("<h3>Canciones --> Año: "+req.getParameter("anhio")+"; Álbum: "+req.getParameter("album2")+"; Estilo: "+req.getParameter("estilo")+"</h3>");
+		out.println("<h4>Resultado de su consulta:</h4>");
 		out.println("<br>");
 		out.println("El número de canciones es: 10");
 		out.println("<form method='GET'>");
@@ -364,9 +327,29 @@ public class Sint12P2 extends HttpServlet{
 		out.println("<input type='submit' onclick='form.anterior.value=32' value='Atrás'>");
 		out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
 		out.println("</form>");
+		imprimirFinal(out);
+
+	}
+
+	public void imprimirInicio(PrintWriter out){
+		out.println("<html lang='es'>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8'>");
+		out.println("<link rel='stylesheet' href='iml.css'>");
+		out.println("<title>Consulta musical</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<header>");
+		out.println("<h1>Servicio web de consulta musical</h1>");
+		out.println("</header>");
+		return;
+	}
+
+	public void imprimirFinal(PrintWriter out){
+		out.println("<footer>Creado por Ruth Guimarey Docampo<br>Servicios de Internet. Práctica 2</footer>");
 		out.println("</body>");
 		out.println("</html>");
-
+		return;
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
