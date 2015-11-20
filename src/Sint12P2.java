@@ -11,7 +11,6 @@ public class Sint12P2 extends HttpServlet{
 
 	}
 
-	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
 	{
 		res.setContentType("text/html");
