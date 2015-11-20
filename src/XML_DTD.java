@@ -32,9 +32,9 @@ public class XML_DTD {
             listaXMLleidos.add(url);
         }
 /*** consulta 1 ***/
-        //ArrayList list = getCantantes();
+        ArrayList list = getCantantes();
         //ArrayList list = getAlbumCantante("todos");
-         ArrayList list = getCancionesCantante("Joaquín Sabina", "Física y Química");
+        // ArrayList list = getCancionesCantante("Joaquín Sabina", "Física y Química");
 /***consulta 2****/
         //ArrayList list = getAnhoAlbumes();
         // ArrayList list = getAlbumesPorAnho("todos");
@@ -365,7 +365,7 @@ public class XML_DTD {
         return lista;
     }
 }
-
+/*
 class XML_DTD_ErrorHandler extends DefaultHandler {
 
     public boolean error;
@@ -425,3 +425,4 @@ class XML_DTD_ErrorHandler extends DefaultHandler {
 
 
 }
+*/

@@ -8,7 +8,7 @@
 		<Id>ImDr</Id>
 	</Nombre>
 	<Nacionalidad>Americano</Nacionalidad>
-	<Album tipo="nuevo" temas="3">
+	<!--<Album tipo="nuevo" temas="3">-->
 
 		<NombreA>Smoke + Mirrors</NombreA>
 		<Año>2015</Año>
