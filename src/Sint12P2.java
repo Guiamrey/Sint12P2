@@ -166,7 +166,7 @@ public class Sint12P2 extends HttpServlet {
 
         ArrayList list = getCantantes();
         imprimirInicio(out);
-     //   out.println("<h2>ETAPA 1.1</h2>");
+        //   out.println("<h2>ETAPA 1.1</h2>");
         out.println("<h4>Seleccione el inteprete deseado:</h4>");
         out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
         out.println("<input type='hidden' name='etapa' value='11'>");
@@ -196,8 +196,8 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAlbumCantante(req.getParameter("interprete"));
 
         imprimirInicio(out);
-       // out.println("<h2>ETAPA 2.1</h2>");
-        out.println("<h3>Lista de canciones<br> Cantante-> " + req.getParameter("interprete") + "</h3>");
+        // out.println("<h2>ETAPA 2.1</h2>");
+        out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + req.getParameter("interprete") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
         out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante=" + req.getParameter("interprete") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
@@ -228,7 +228,7 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
 
         imprimirInicio(out);
-        out.println("<h3>Lista de canciones <br> Cantante-> " + req.getParameter("interprete") + "<br>Álbum-> " + req.getParameter("album1") + "</h3>");
+        out.println("<h2>Lista de canciones</h2><h3>Cantante: " + req.getParameter("interprete") + "<br>Álbum: " + req.getParameter("album1") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
 
         out.println("<br>");
@@ -268,7 +268,7 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAnhoAlbumes();
 
         imprimirInicio(out);
-     //   out.println("<h2>ETAPA 1.2</h2>");
+        //   out.println("<h2>ETAPA 1.2</h2>");
         out.println("<h3>Lista de canciones por estilo</h3>");
         out.println("<h4>Seleccione el año deseado:</h4>");
         out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
@@ -298,8 +298,8 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAlbumesPorAnho(req.getParameter("anhio"));
 
         imprimirInicio(out);
-      //  out.println("<h2>ETAPA 2.2</h2>");
-        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "</h3>");
+        //  out.println("<h2>ETAPA 2.2</h2>");
+        out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
         out.println("<form method='GET' action='?etapa=32&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
@@ -332,8 +332,8 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
 
         imprimirInicio(out);
-       // out.println("<h2>ETAPA 3.2</h2>");
-        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "<br>Álbum-> " + req.getParameter("album2") + "</h3>");
+        // out.println("<h2>ETAPA 3.2</h2>");
+        out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "</h3>");
         out.println("<h4>Seleccione el estilo deseado:</h4>");
         out.println("<form method='GET' action='?etapa=42&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "album=" + req.getParameter("album2") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
@@ -367,11 +367,10 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
 
         imprimirInicio(out);
-        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "<br>Álbum-> " + req.getParameter("album2") + "<br>Estilo-> " + req.getParameter("estilo") + "</h3>");
+        out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "<br>Estilo: " + req.getParameter("estilo") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
         out.println("<br>");
-        int size = list.size()+1;
-        out.println("El número de canciones es: " + size);
+        out.println("El número de canciones es: " + list.size());
         out.println("<form method='GET'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
@@ -583,7 +582,8 @@ public class Sint12P2 extends HttpServlet {
                     NamedNodeMap attributes = canciones.getAttributes();
                     for (int j = 0; j < attributes.getLength(); j++) {
                         String estilo = attributes.item(j).getTextContent();
-                        lista.add(estilo);
+                        if (!lista.contains(estilo))
+                            lista.add(estilo);
                     }
                 }
             }
@@ -635,6 +635,7 @@ public class Sint12P2 extends HttpServlet {
                                     descrip = descrip + cad + " ";
                                 }
                                 String song = nombreC + " (" + descrip + "; " + duracion + ")";
+                                lista.add(song);
                                 System.out.println(song);
 
                             }

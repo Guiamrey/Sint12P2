@@ -29,7 +29,7 @@ h2{
 }
 h3{
     text-align: center;
-    font-size: 160%;
+    font-size: 140%;
     margin-bottom: 5px;
     margin-top: 10px;
 }
@@ -70,5 +70,6 @@ input[type="submit"]{
     margin: 5px;
 }
 ul{
+    margin: 0;
     font-size: 130%;
 }
