@@ -25,31 +25,22 @@ public class Sint12P2 extends HttpServlet {
 
         String URL = "sabina.xml";
         listaXML.add(URL);
-       // processIML(URL);
-       // listaXMLleidos.add(URL);
+
         int i = 0;
         while (listaXML.size() > 0) {
 
             i++;
-          //  System.out.println("----------->"+i);
             String url = listaXML.get(0);
             processIML(url);
             listaXML.remove(0);
             listaXMLleidos.add(url);
-         //   System.out.println("RRRRRR"+url);
+
         }
-      //  System.out.println("EEERRR"+listError.size());
         return;
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-      /* System.out.println("doGet");
-        if(!inicio){
-            init();
-            inicio = true;
-        }
 
-*/
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
@@ -123,9 +114,25 @@ public class Sint12P2 extends HttpServlet {
     public void Inicio(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
         imprimirInicio(out);
-        for (int i = 0; i < listError.size(); i++) {
-            out.println("<br>Errores encontrados:<br>"+listError.get(i)+"");
+        out.println("<div class='error'>");
+        out.println("<b>Errores encontrados</b>: <br>");
+        if (listError.size() == 0) {
+            out.println("Ningún error encontrado");
+        } else {
+            for (int i = 0; i < listError.size(); i++) {
+                out.println(listError.get(i) + "<br>");
+            }
         }
+        out.println("<br><b>Ficheros erróneos</b>: <br>");
+        if (listFichError.size() == 0) {
+            out.println("Ningún fichero erróneo encontrado");
+        } else {
+            for (int i = 0; i < listFichError.size(); i++) {
+                out.println(listFichError.get(i) + "<br>");
+            }
+        }
+        out.println("</div>");
+
         out.println("<h3>Selecciona la consulta que desea hacer</h3>");
         out.println("<form method='GET' action='?etapa=1' >");
         out.println("<input type='hidden' name='etapa' value='10'>");
@@ -158,25 +165,21 @@ public class Sint12P2 extends HttpServlet {
     public void etapa11(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
         ArrayList list = getCantantes();
-     //   System.out.println("11111111111111   "+cantantes.size());
         imprimirInicio(out);
-        out.println("<h2>ETAPA 1.1</h2>");
+     //   out.println("<h2>ETAPA 1.1</h2>");
         out.println("<h4>Seleccione el inteprete deseado:</h4>");
         out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
         out.println("<input type='hidden' name='etapa' value='11'>");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
+
         for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='"+list.get(i)+"' name='interprete'>"+list.get(i)+"");
+            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='interprete'>" + list.get(i) + "");
             out.println("<br>");
         }
-       /* out.println("<input type='radio' checked='' value='Cantante 1' name='interprete'>Cantante 1");
-        out.println("<br>");
-        out.println("<input type='radio' value='Cantante 2' name='interprete'>Cantante 2");
-        out.println("<br>");
-        out.println("<input type='radio' value='Cantante 3' name='interprete'>Cantante 3");
-        out.println("<br>");*/
+
         out.println("<input type='radio' value='Todos' name='interprete'>Todos");
         out.println("<br>");
+
         out.println("<p>");
         out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
@@ -193,27 +196,22 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAlbumCantante(req.getParameter("interprete"));
 
         imprimirInicio(out);
-        out.println("<h2>ETAPA 2.1</h2>");
-        out.println("<h3>Cantantes --> Cantante: " + req.getParameter("interprete") + "</h3>");
+       // out.println("<h2>ETAPA 2.1</h2>");
+        out.println("<h3>Lista de canciones<br> Cantante-> " + req.getParameter("interprete") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante="+req.getParameter("interprete") + "' >");
+        out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante=" + req.getParameter("interprete") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
         out.println("<input type='hidden' name='etapa' value='21'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
-        out.println("<input type='hidden' name='interprete' value='"+ req.getParameter("interprete")+"'>");
+        out.println("<input type='hidden' name='interprete' value='" + req.getParameter("interprete") + "'>");
 
         for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='"+list.get(i)+"' name='album1'>"+list.get(i)+"");
+            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album1'>" + list.get(i) + "");
             out.println("<br>");
         }
-      /*  out.println("<input type='radio' checked='' value='Album 1' name='album1'>Album 1");
+        out.println("<input type='radio' value='Todos' name='album1'>Todos ");
         out.println("<br>");
-        out.println("<input type='radio' value='Album 2' name='album1'>Album 2");
-        out.println("<br>");
-        out.println("<input type='radio' value='Album 3' name='album1'>Album 3");
-        out.println("<br>");
-      */  out.println("<input type='radio' value='Todos' name='album1'>Todos ");
-        out.println("<br>");
+
         out.println("<p>");
         out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
@@ -227,25 +225,26 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado1(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getCancionesCantante(req.getParameter("interprete"),req.getParameter("album1"));
+        ArrayList list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
 
         imprimirInicio(out);
-        out.println("<h3>Cantantes --> Cantante: " + req.getParameter("interprete") + "; Álbum: " + req.getParameter("album1") + "</h3>");
+        out.println("<h3>Lista de canciones <br> Cantante-> " + req.getParameter("interprete") + "<br>Álbum-> " + req.getParameter("album1") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
 
         out.println("<br>");
         out.println("<ul>");
 
         for (int i = 0; i < list.size(); i++) {
-            out.println("<il>"+list.get(i)+"</li>");
+            out.println("<il>" + list.get(i) + "</li>");
             out.println("<br>");
         }
+
         out.println("</ul>");
         out.println("<br>");
         out.println("<form method='GET'>");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
-        out.println("<input type='hidden' name='interprete' value='"+req.getParameter("interprete")+"'>");
-        out.println("<input type='hidden' name='album-1' value='"+req.getParameter("album1")+"'>");
+        out.println("<input type='hidden' name='interprete' value='" + req.getParameter("interprete") + "'>");
+        out.println("<input type='hidden' name='album-1' value='" + req.getParameter("album1") + "'>");
         out.println("<input type='hidden' name='etapa' value='31'>");
 
         out.println("<input type='hidden' name='anterior' value='null'>");
@@ -269,24 +268,19 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAnhoAlbumes();
 
         imprimirInicio(out);
-        out.println("<h2>ETAPA 1.2</h2>");
+     //   out.println("<h2>ETAPA 1.2</h2>");
         out.println("<h3>Lista de canciones por estilo</h3>");
         out.println("<h4>Seleccione el año deseado:</h4>");
         out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
         out.println("<input type='hidden' name='etapa' value='12'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
 
+
         for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='"+list.get(i)+"' name='anhio'>"+list.get(i)+"");
+            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='anhio'>" + list.get(i) + "");
             out.println("<br>");
         }
-        /*out.println("<input type='radio' checked='' value='Anho 1' name='anhio'>Año 1");
-        out.println("<br>");
-        out.println("<input type='radio' value='Anho 2' name='anhio'>Año 2");
-        out.println("<br>");
-        out.println("<input type='radio' value='Anho 3' name='anhio'>Año 3");
-        out.println("<br>");
-      */  out.println("<input type='radio' value='Todos' name='anhio'>Todos");
+        out.println("<input type='radio' value='Todos' name='anhio'>Todos");
         out.println("<br>");
         out.println("<p>");
         out.println("<input type='submit' value='Enviar' >");
@@ -304,8 +298,8 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAlbumesPorAnho(req.getParameter("anhio"));
 
         imprimirInicio(out);
-        out.println("<h2>ETAPA 2.2</h2>");
-        out.println("<h3>Canciones --> Año: " + req.getParameter("anhio") + "</h3>");
+      //  out.println("<h2>ETAPA 2.2</h2>");
+        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
         out.println("<form method='GET' action='?etapa=32&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
@@ -316,17 +310,11 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
 
         for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='"+list.get(i)+"' name='album2'>"+list.get(i)+"");
+            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album2'>" + list.get(i) + "");
             out.println("<br>");
         }
 
-       /* out.println("<input type='radio' checked='' value='Album 1' name='album2'>Album 1");
-        out.println("<br>");
-        out.println("<input type='radio' value='Album 2' name='album2'>Album 2");
-        out.println("<br>");
-        out.println("<input type='radio' value='Album 3' name='album2'>Album 3");
-        out.println("<br>");
-      */  out.println("<input type='radio' value='Todos' name='album2'>Todos");
+        out.println("<input type='radio' value='Todos' name='album2'>Todos");
         out.println("<br>");
         out.println("<p>");
         out.println("<input type='submit' value='Enviar' >");
@@ -341,11 +329,11 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa32(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getEstilo(req.getParameter("anhio"),req.getParameter("album2"));
+        ArrayList list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
 
         imprimirInicio(out);
-        out.println("<h2>ETAPA 3.2</h2>");
-        out.println("<h3>Canciones --> Año: " + req.getParameter("anhio") + "; Álbum: " + req.getParameter("album2") + "</h3>");
+       // out.println("<h2>ETAPA 3.2</h2>");
+        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "<br>Álbum-> " + req.getParameter("album2") + "</h3>");
         out.println("<h4>Seleccione el estilo deseado:</h4>");
         out.println("<form method='GET' action='?etapa=42&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "album=" + req.getParameter("album2") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
@@ -357,17 +345,11 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='album2' value='" + req.getParameter("album2") + "'>");
 
         for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='"+list.get(i)+"' name='estilo'>"+list.get(i)+"");
+            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='estilo'>" + list.get(i) + "");
             out.println("<br>");
         }
 
-     /*   out.println("<input type='radio' checked='' value='Estilo 1' name='estilo'>Estilo 1");
-        out.println("<br>");
-        out.println("<input type='radio' value='Estilo 2' name='estilo'>Estilo 2");
-        out.println("<br>");
-        out.println("<input type='radio' value='Estilo 3' name='estilo'>Estilo 3");
-        out.println("<br>");
-       */ out.println("<input type='radio' value='Todos' name='estilo'>Todos");
+        out.println("<input type='radio' value='Todos' name='estilo'>Todos");
         out.println("<br>");
         out.println("<p>");
         out.println("<input type='submit' value='Enviar' >");
@@ -382,13 +364,14 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado2(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getCancionesEstilo(req.getParameter("anhio"),req.getParameter("album2"),req.getParameter("estilo"));
+        ArrayList list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
 
         imprimirInicio(out);
-        out.println("<h3>Canciones --> Año: " + req.getParameter("anhio") + "; Álbum: " + req.getParameter("album2") + "; Estilo: " + req.getParameter("estilo") + "</h3>");
+        out.println("<h3>Número de canciones <br> Año-> " + req.getParameter("anhio") + "<br>Álbum-> " + req.getParameter("album2") + "<br>Estilo-> " + req.getParameter("estilo") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
         out.println("<br>");
-        out.println("El número de canciones es: "+list.size()+1);
+        int size = list.size()+1;
+        out.println("El número de canciones es: " + size);
         out.println("<form method='GET'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
@@ -412,11 +395,11 @@ public class Sint12P2 extends HttpServlet {
         out.println("<meta charset='utf-8'>");
         out.println("<link rel='stylesheet' href='iml.css'>");
         out.println("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>");
-        out.println("<title>Consulta musical</title>");
+        out.println("<title>Consulta músical</title>");
         out.println("</head>");
         out.println("<body>");
         out.println("<header>");
-        out.println("<h1>Servicio web de consulta musical</h1>");
+        out.println("<h1>Servicio web de consulta músical</h1>");
         out.println("</header>");
         out.println("<div>");
         return;
@@ -452,10 +435,8 @@ public class Sint12P2 extends HttpServlet {
             db.setErrorHandler(errorHandler);
 
             doc = db.parse(XML);
-            System.out.println(XML);
 
             listDoc.add(doc);
-       //     System.out.println("HOLA1)");
             NodeList iml = doc.getElementsByTagName("IML");
             for (int i = 0; i < iml.getLength(); i++) {
 
@@ -466,19 +447,15 @@ public class Sint12P2 extends HttpServlet {
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
 
+            listError.add("Error: " + e.toString());
+            listFichError.add("Fiechero erróneo: " + XML);
             if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
                 listFichError.add(XML);
                 listError.add(errorHandler.getMessage());
                 errorHandler.clear();
-        //        System.out.println("HOLA)");
                 return;
             }
-          //  e.printStackTrace();
-          //  return;
         }
-
-
-
 
 
     }
@@ -688,21 +665,16 @@ class XML_DTD_ErrorHandler extends DefaultHandler {
     public void warning(SAXParseException spe) {
         warning = true;
         message = "Warning: " + spe.toString();
-        // System.out.println(message);
     }
 
     public void error(SAXParseException spe) {
         error = true;
         message = "Error: " + spe.toString();
-
-        // System.out.println(message);
     }
 
     public void fatalerror(SAXParseException spe) {
         fatalerror = true;
         message = "Fatal Error: " + spe.toString();
-
-        // System.out.println(message);
     }
 
     public boolean hasWarning() {

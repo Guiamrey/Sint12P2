@@ -8,6 +8,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 
 public class XML_DTD {
 
@@ -45,6 +50,13 @@ public class XML_DTD {
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
         }
+
+        for (int i = 0; i < listError.size(); i++) {
+            System.out.println(listError.get(i));
+        }
+        for (int i = 0; i < listFichError.size(); i++) {
+            System.out.println(listFichError.get(i));
+        }
     }
 
     public static void processIML(String XML) {
@@ -62,29 +74,34 @@ public class XML_DTD {
 
             doc = db.parse(XML);
 
+            listDoc.add(doc);
+
+            NodeList iml = doc.getElementsByTagName("IML");
+            for (int i = 0; i < iml.getLength(); i++) {
+
+                if ((!listaXML.contains(iml.item(i).getTextContent()) && !iml.item(i).getTextContent().equals("")) && !listaXMLleidos.contains(iml.item(i).getTextContent())) {
+                    listaXML.add(iml.item(i).getTextContent());
+                }
+            }
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-            return;
 
-        }
-
-        if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
-            listFichError.add(XML);
-            listError.add(errorHandler.getMessage());
-            errorHandler.clear();
-            return;
-        }
-
-        listDoc.add(doc);
-
-        NodeList iml = doc.getElementsByTagName("IML");
-        for (int i = 0; i < iml.getLength(); i++) {
-
-            if ((!listaXML.contains(iml.item(i).getTextContent()) && !iml.item(i).getTextContent().equals("")) && !listaXMLleidos.contains(iml.item(i).getTextContent())) {
-                listaXML.add(iml.item(i).getTextContent());
+            listError.add("Error: "+e.toString());
+            listFichError.add("Fiechero erróneo: "+XML);
+            if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
+                listFichError.add(XML);
+                listError.add(errorHandler.getMessage());
+                errorHandler.clear();
+                return;
             }
+
         }
+
+
+
+
+
+
         /*
         XPath xpath = XPathFactory.newInstance().newXPath();
         NodeList nodelist = null;
@@ -170,6 +187,8 @@ public class XML_DTD {
         ArrayList<String> lista = new ArrayList<>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement(); //Element Interprete
+
+
             Node firstChild = element.getFirstChild(); //Primer hijo (#text) del elemento Interprete
             Node nextSibling = firstChild.getNextSibling(); //Hermano -> element Nombre
             Node firstChild1 = nextSibling.getFirstChild();
