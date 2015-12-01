@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 public class Sint12P2 extends HttpServlet {
 
-    public static ArrayList<String> listaXML = new ArrayList<>();
-    public static ArrayList<String> listaXMLleidos = new ArrayList<>();
-    public static ArrayList<Document> listDoc = new ArrayList<>();
-    public static ArrayList<String> listError = new ArrayList<>();
-    public static ArrayList<String> listFichError = new ArrayList<>();
+    public static ArrayList<String> listaXML = new ArrayList<String>();
+    public static ArrayList<String> listaXMLleidos = new ArrayList<String>();
+    public static ArrayList<Document> listDoc = new ArrayList<Document>();
+    public static ArrayList<String> listError = new ArrayList<String>();
+    public static ArrayList<String> listFichError = new ArrayList<String>();
     public boolean inicio = false;
 
     public void init() {
@@ -165,7 +165,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa11(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getCantantes();
+        ArrayList<String> list = getCantantes();
         imprimirInicio(out);
         out.println("<h4>Seleccione el inteprete deseado:</h4>");
         out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
@@ -193,7 +193,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa21(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("ISO-8859-15");
-        ArrayList list = getAlbumCantante(req.getParameter("interprete"));
+        ArrayList<String> list = getAlbumCantante(req.getParameter("interprete"));
         System.out.println("encoding: "+req.getCharacterEncoding());
         System.out.println("---->"+req.getParameter("interprete"));
         imprimirInicio(out);
@@ -225,7 +225,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado1(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
+        ArrayList<String> list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
 
         imprimirInicio(out);
         out.println("<h2>Lista de canciones</h2><h3>Cantante: " + req.getParameter("interprete") + "<br>Álbum: " + req.getParameter("album1") + "</h3>");
@@ -265,7 +265,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa12(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getAnhoAlbumes();
+        ArrayList<String> list = getAnhoAlbumes();
 
         imprimirInicio(out);
         out.println("<h3>Lista de canciones por estilo</h3>");
@@ -294,7 +294,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa22(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getAlbumesPorAnho(req.getParameter("anhio"));
+        ArrayList<String> list = getAlbumesPorAnho(req.getParameter("anhio"));
 
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "</h3>");
@@ -327,7 +327,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa32(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
+        ArrayList<String> list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
 
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "</h3>");
@@ -361,7 +361,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado2(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        ArrayList list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
+        ArrayList<String> list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
 
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "<br>Estilo: " + req.getParameter("estilo") + "</h3>");
@@ -459,7 +459,7 @@ public class Sint12P2 extends HttpServlet {
     /***
      * CONSULTA 1
      *********/
-    public static ArrayList getCantantes() {
+    public static ArrayList<String> getCantantes() {
 
         ArrayList<String> lista = new ArrayList<>();
         for (Document doc : listDoc) {
@@ -473,7 +473,7 @@ public class Sint12P2 extends HttpServlet {
         return lista;
     }
 
-    public static ArrayList getAlbumCantante(String cantante) {
+    public static ArrayList<String> getAlbumCantante(String cantante) {
         ArrayList<String> lista = new ArrayList<>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
@@ -489,7 +489,7 @@ public class Sint12P2 extends HttpServlet {
         return lista;
     }
 
-    public static ArrayList getCancionesCantante(String cantante, String album) {
+    public static ArrayList<String> getCancionesCantante(String cantante, String album) {
         ArrayList<String> lista = new ArrayList<>();
 
         for (Document doc : listDoc) {
@@ -539,7 +539,7 @@ public class Sint12P2 extends HttpServlet {
     /*******
      * CONSULTA 2
      *******/
-    public static ArrayList getAnhoAlbumes() {
+    public static ArrayList<String> getAnhoAlbumes() {
 
         ArrayList<String> lista = new ArrayList<>();
         for (Document doc : listDoc) {
@@ -552,8 +552,8 @@ public class Sint12P2 extends HttpServlet {
         return lista;
     }
 
-    public static ArrayList getAlbumesPorAnho(String anho) {
-        ArrayList lista = new ArrayList();
+    public static ArrayList<String> getAlbumesPorAnho(String anho) {
+        ArrayList<String> lista = new ArrayList();
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
@@ -567,8 +567,8 @@ public class Sint12P2 extends HttpServlet {
         return lista;
     }
 
-    public static ArrayList getEstilo(String anho, String album) {
-        ArrayList lista = new ArrayList();
+    public static ArrayList<String> getEstilo(String anho, String album) {
+        ArrayList<String> lista = new ArrayList();
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
@@ -588,8 +588,8 @@ public class Sint12P2 extends HttpServlet {
         return lista;
     }
 
-    public static ArrayList getCancionesEstilo(String anho, String album, String estilo) {
-        ArrayList lista = new ArrayList();
+    public static ArrayList<String> getCancionesEstilo(String anho, String album, String estilo) {
+        ArrayList<String> lista = new ArrayList();
 
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
