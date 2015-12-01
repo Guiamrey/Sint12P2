@@ -41,6 +41,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
+        req.setCharacterEncoding("UTF-8");
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
@@ -166,7 +167,6 @@ public class Sint12P2 extends HttpServlet {
 
         ArrayList list = getCantantes();
         imprimirInicio(out);
-        //   out.println("<h2>ETAPA 1.1</h2>");
         out.println("<h4>Seleccione el inteprete deseado:</h4>");
         out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
         out.println("<input type='hidden' name='etapa' value='11'>");
@@ -192,11 +192,11 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void etapa21(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-
+        req.setCharacterEncoding("ISO-8859-15");
         ArrayList list = getAlbumCantante(req.getParameter("interprete"));
-
+        System.out.println("encoding: "+req.getCharacterEncoding());
+        System.out.println("---->"+req.getParameter("interprete"));
         imprimirInicio(out);
-        // out.println("<h2>ETAPA 2.1</h2>");
         out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + req.getParameter("interprete") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
         out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante=" + req.getParameter("interprete") + "' >");
@@ -268,7 +268,6 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAnhoAlbumes();
 
         imprimirInicio(out);
-        //   out.println("<h2>ETAPA 1.2</h2>");
         out.println("<h3>Lista de canciones por estilo</h3>");
         out.println("<h4>Seleccione el año deseado:</h4>");
         out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
@@ -298,7 +297,6 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getAlbumesPorAnho(req.getParameter("anhio"));
 
         imprimirInicio(out);
-        //  out.println("<h2>ETAPA 2.2</h2>");
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
         out.println("<form method='GET' action='?etapa=32&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "' >");
@@ -332,7 +330,6 @@ public class Sint12P2 extends HttpServlet {
         ArrayList list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
 
         imprimirInicio(out);
-        // out.println("<h2>ETAPA 3.2</h2>");
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "</h3>");
         out.println("<h4>Seleccione el estilo deseado:</h4>");
         out.println("<form method='GET' action='?etapa=42&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "album=" + req.getParameter("album2") + "' >");
@@ -391,7 +388,7 @@ public class Sint12P2 extends HttpServlet {
     public void imprimirInicio(PrintWriter out) {
         out.println("<html lang='es'>");
         out.println("<head>");
-        out.println("<meta charset='utf-8'>");
+        out.println("<meta charset='ISO-8859-15'>");
         out.println("<link rel='stylesheet' href='iml.css'>");
         out.println("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>");
         out.println("<title>Consulta músical</title>");
@@ -503,7 +500,7 @@ public class Sint12P2 extends HttpServlet {
                 for (int j = 0; j < canciones.getLength(); j++) {
                     String nombreA = canciones.item(j).getParentNode().getFirstChild().getNextSibling().getTextContent();
                     if (nombreA.equals(album) || album.equalsIgnoreCase("todos")) {
-                        NodeList childNodes = canciones.item(j).getChildNodes();
+                        NodeList childNodes = canciones.item(j).getChildNodes(); //NODOS CANCION QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
 
                         ArrayList<String> descrp = new ArrayList<>();
                         String nombreC = null;
@@ -511,16 +508,16 @@ public class Sint12P2 extends HttpServlet {
                         String descrip = "";
 
                         for (int i = 0; i < childNodes.getLength(); i++) {
-                            if (childNodes.item(i).getNodeName().equals("#text")) {
+                            if (childNodes.item(i).getNodeName().equals("#text")) { //SELECCIONAR LOS COMENTARIOS DENTRO DEL ELEMENTO CANCION
                                 String aux = childNodes.item(i).getTextContent();
                                 aux = aux.replaceAll("\n", "").trim();
                                 if (!aux.equals(""))
                                     descrp.add(aux);
                             } else {
-                                if (childNodes.item(i).getNodeName().equals("NombreT")) {
+                                if (childNodes.item(i).getNodeName().equals("NombreT")) { //SACAR EL NOMBRE DE LA CANCION
                                     nombreC = childNodes.item(i).getTextContent();
                                 } else {
-                                    if (childNodes.item(i).getNodeName().equals("Duracion")) {
+                                    if (childNodes.item(i).getNodeName().equals("Duracion")) { //SACAR LA DURACION DE LA CANCION
                                         duracion = childNodes.item(i).getTextContent();
                                     }
                                 }
@@ -601,43 +598,27 @@ public class Sint12P2 extends HttpServlet {
                 String nombreA = albumes.item(i).getFirstChild().getNextSibling().getTextContent();
                 if ((Anho.equals(anho) || anho.equalsIgnoreCase("todos")) && (nombreA.equals(album) || album.equalsIgnoreCase("todos"))) {
                     Element disco = (Element) albumes.item(i);
-                    NodeList canciones = disco.getElementsByTagName("Cancion");
+                    NodeList canciones = disco.getElementsByTagName("Cancion"); //TODAS LAS CANCIONES DEL ALBUM SELECIONADO
                     for (int a = 0; a < canciones.getLength(); a++) {
                         NamedNodeMap attributes = canciones.item(a).getAttributes();
                         for (int j = 0; j < attributes.getLength(); j++) {
                             String Estilo = attributes.item(j).getTextContent();
                             if (Estilo.equals(estilo) || estilo.equalsIgnoreCase("todos")) {
 
-                                NodeList childNodes = canciones.item(a).getChildNodes();
+                                NodeList childNodes = canciones.item(a).getChildNodes(); //ELEMENTOS DE LAS CANCIONES QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
 
                                 ArrayList<String> descrp = new ArrayList<>();
                                 String nombreC = null;
                                 String duracion = null;
-                                String descrip = "";
 
                                 for (int k = 0; k < childNodes.getLength(); k++) {
-                                    if (childNodes.item(k).getNodeName().equals("#text")) {
-                                        String aux = childNodes.item(k).getTextContent();
-                                        aux = aux.replaceAll("\n", "").trim();
-                                        if (!aux.equals(""))
-                                            descrp.add(aux);
-                                    } else {
-                                        if (childNodes.item(k).getNodeName().equals("NombreT")) {
-                                            nombreC = childNodes.item(k).getTextContent();
-                                        } else {
-                                            if (childNodes.item(k).getNodeName().equals("Duracion")) {
-                                                duracion = childNodes.item(k).getTextContent();
-                                            }
-                                        }
+                                    if (childNodes.item(k).getNodeName().equals("NombreT")) { //SACAR EL NOMBRE DE LA CANCION
+                                        nombreC = childNodes.item(k).getTextContent();
                                     }
                                 }
-                                for (String cad : descrp) {
-                                    descrip = descrip + cad + " ";
-                                }
-                                String song = nombreC + " (" + descrip + "; " + duracion + ")";
-                                lista.add(song);
-                                System.out.println(song);
 
+                                String song = nombreC;
+                                lista.add(song);
                             }
                         }
                     }
