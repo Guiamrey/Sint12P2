@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -37,8 +38,8 @@ public class XML_DTD {
             listaXMLleidos.add(url);
         }
 /*** consulta 1 ***/
-        ArrayList list = getCantantes();
-        //ArrayList list = getAlbumCantante("todos");
+       // ArrayList list = getCantantes();
+        ArrayList list = getAlbumCantante("todos");
         // ArrayList list = getCancionesCantante("Joaquín Sabina", "Física y Química");
 /***consulta 2****/
         //ArrayList list = getAnhoAlbumes();
@@ -200,6 +201,7 @@ public class XML_DTD {
 
     public static ArrayList getAlbumCantante(String cantante) {
         ArrayList<String> lista = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
             String nombre = element.getFirstChild().getNextSibling().getFirstChild().getNextSibling().getTextContent();
@@ -207,11 +209,21 @@ public class XML_DTD {
                 NodeList nombreA = doc.getElementsByTagName("NombreA");
                 for (int i = 0; i < nombreA.getLength(); i++) {
                     String albumes = nombreA.item(i).getTextContent();
-                    lista.add(albumes);
+                    String anho = nombreA.item(i).getNextSibling().getNextSibling().getTextContent();
+                    lista.add(anho +"--" + albumes);
                 }
             }
         }
-        return lista;
+        Collections.sort(lista);
+        System.out.println("\n\n");
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println(lista.get(i));
+        }
+        for (int i = 0; i < lista.size(); i++) {
+            String aux[] = lista.get(i).split("--");
+            list.add(aux[1]);
+        }
+        return list;
     }
 
     public static ArrayList getCancionesCantante(String cantante, String album) {
