@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.nio.charset.Charset;
 
 public class Sint12P2 extends HttpServlet {
 
@@ -39,10 +40,14 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+       doPost(req, res);
+    }
 
-        req.setCharacterEncoding("UTF-8");
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
+        req.setCharacterEncoding("UTF-8");
 
         if (req.getParameter("etapa") != null) { // si no existe el hidden "etapa" es que se ha cargado la pagina desde cero
             String etapa = req.getParameter("etapa");
@@ -106,8 +111,10 @@ public class Sint12P2 extends HttpServlet {
             Inicio(out, req, res);
         }
     }
+
     /*****************************************************************************************************************************************/
     public void Inicio(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         imprimirInicio(out);
         out.println("<div class='error'>");
@@ -129,7 +136,7 @@ public class Sint12P2 extends HttpServlet {
         }
         out.println("</div>");
         out.println("<h3>Selecciona la consulta que desea hacer</h3>");
-        out.println("<form method='GET' action='?etapa=1' >");
+        out.println("<form method='POST' action='?etapa=1' >");
         out.println("<input type='hidden' name='etapa' value='10'>");
         if (req.getParameter("consultainicial") != null) {
             if (req.getParameter("consultainicial").equals("Cantantes")) {
@@ -161,7 +168,7 @@ public class Sint12P2 extends HttpServlet {
         ArrayList<String> list = getCantantes();
         imprimirInicio(out);
         out.println("<h4>Seleccione el inteprete deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=21&consultainicial=Cantantes' >");
+        out.println("<form method='POST' action='?etapa=11&consultainicial=Cantantes' >");
         out.println("<input type='hidden' name='etapa' value='11'>");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
 
@@ -181,20 +188,13 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void etapa21(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //  req.setCharacterEncoding("ISO-8859-15");
-        System.out.println("encoding: " + req.getCharacterEncoding());
-        String inter = req.getParameter("interprete");
-        String interprete = new String(inter.getBytes("ISO-8859-1"), "UTF-8");
-        //   ArrayList<String> list = getAlbumCantante(req.getParameter("interprete"));
-        System.out.println(interprete);
-        ArrayList<String> list = getAlbumCantante(interprete);
-        System.out.println("encoding: " + req.getCharacterEncoding());
-        //  System.out.println("---->" + req.getParameter("interprete"));
+
+        req.setCharacterEncoding("UTF-8");
+        ArrayList<String> list = getAlbumCantante(req.getParameter("interprete"));
         imprimirInicio(out);
-        // out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + req.getParameter("interprete") + "</h3>");
-        out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + interprete + "</h3>");
+        out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + req.getParameter("interprete") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=31&consultainicial=Cantantes&Cantante=" + req.getParameter("interprete") + "' >");
+        out.println("<form method='POST  ' action='?etapa=21&consultainicial=Cantantes&Cantante=\" + req.getParameter(\"interprete\") + \"' >");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
         out.println("<input type='hidden' name='etapa' value='21'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
@@ -216,6 +216,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void resultado1(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         ArrayList<String> list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
 
@@ -231,7 +232,7 @@ public class Sint12P2 extends HttpServlet {
         }
         out.println("</ul>");
         out.println("<br>");
-        out.println("<form method='GET'>");
+        out.println("<form method='POST'>");
         out.println("<input type='hidden' name='consultainicial' value='Cantantes'>");
         out.println("<input type='hidden' name='interprete' value='" + req.getParameter("interprete") + "'>");
         out.println("<input type='hidden' name='album-1' value='" + req.getParameter("album1") + "'>");
@@ -243,17 +244,19 @@ public class Sint12P2 extends HttpServlet {
         out.println("</form>");
         imprimirFinal(out);
     }
+
     /*********************************************************************************************
      * **********************************************************************************************
      ************************************************************************************************/
     public void etapa12(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         ArrayList<String> list = getAnhoAlbumes();
 
         imprimirInicio(out);
         out.println("<h3>Lista de canciones por estilo</h3>");
         out.println("<h4>Seleccione el año deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=22&consultainicial=Canciones' >");
+        out.println("<form method='POST' action='?etapa=12&consultainicial=Canciones' >");
         out.println("<input type='hidden' name='etapa' value='12'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         for (int i = 0; i < list.size(); i++) {
@@ -272,13 +275,14 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void etapa22(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         ArrayList<String> list = getAlbumesPorAnho(req.getParameter("anhio"));
 
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=32&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "' >");
+        out.println("<form method='POST' action='?etapa=22&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         out.println("<input type='hidden' name='etapa' value='22'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
@@ -299,13 +303,14 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void etapa32(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         ArrayList<String> list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
 
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "</h3>");
         out.println("<h4>Seleccione el estilo deseado:</h4>");
-        out.println("<form method='GET' action='?etapa=42&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "album=" + req.getParameter("album2") + "' >");
+        out.println("<form method='POST' action='?etapa=32&consultainicial=Canciones&anio=" + req.getParameter("anhio") + "album=" + req.getParameter("album2") + "' >");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
         out.println("<input type='hidden' name='etapa' value='32'>");
@@ -327,6 +332,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void resultado2(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
 
         ArrayList<String> list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
 
@@ -335,7 +341,7 @@ public class Sint12P2 extends HttpServlet {
         out.println("<h4>Resultado de su consulta:</h4>");
         out.println("<br>");
         out.println("El número de canciones es: " + list.size());
-        out.println("<form method='GET'>");
+        out.println("<form method='POST'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
         out.println("<input type='hidden' name='album2' value='" + req.getParameter("album2") + "'>");
@@ -352,7 +358,7 @@ public class Sint12P2 extends HttpServlet {
     public void imprimirInicio(PrintWriter out) {
         out.println("<html lang='es'>");
         out.println("<head>");
-        out.println("<meta charset='ISO-8859-15'>");
+        out.println("<meta charset='UTF-8'>");
         out.println("<link rel='stylesheet' href='iml.css'>");
         out.println("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>");
         out.println("<title>Consulta músical</title>");
@@ -371,10 +377,6 @@ public class Sint12P2 extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
         return;
-    }
-
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        doGet(req, res);
     }
 
     /*************************************************************************************************************************************
