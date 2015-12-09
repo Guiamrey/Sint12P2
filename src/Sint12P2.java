@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -27,7 +28,9 @@ public class Sint12P2 extends HttpServlet {
 
     public void init() {
 
-        String URL = "sabina.xml";
+       // String URL = "http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/sabina.xml";
+        String URL = "http://178.62.190.10/sabina.xml";
+      //  String URL = "sabina.xml";
         listaXML.add(URL);
         int i = 0;
         while (listaXML.size() > 0) {
@@ -398,21 +401,45 @@ public class Sint12P2 extends HttpServlet {
 
             db.setErrorHandler(errorHandler);
 
-            doc = db.parse(XML);
-
+            if(XML.startsWith("http")) {
+               // doc = db.parse(new URL(XML).openStream(), "http://localhost:8012/sint12/");
+                doc = db.parse(new URL(XML).openStream());
+                // doc = db.parse(XML);
+            }else{
+                //doc = db.parse(new URL("http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/"+XML).openStream(), "http://localhost:8012/sint12/");
+                doc = db.parse(new URL("http://178.62.190.10/"+XML).openStream());
+            }
             listDoc.add(doc);
             NodeList iml = doc.getElementsByTagName("IML");
             for (int i = 0; i < iml.getLength(); i++) {
-
-                if ((!listaXML.contains(iml.item(i).getTextContent()) && !iml.item(i).getTextContent().equals("")) && !listaXMLleidos.contains(iml.item(i).getTextContent())) {
-                    listaXML.add(iml.item(i).getTextContent());
+                String IML = iml.item(i).getTextContent().trim();
+                if ((!listaXML.contains(IML) && !IML.equals("")) && !listaXMLleidos.contains(IML)) {
+                    listaXML.add(IML);
                 }
             }
 
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-
+        } catch (ParserConfigurationException e) {
             listError.add("Error: " + e.toString());
-            listFichError.add("Fiechero erróneo: " + XML);
+            listFichError.add("Fichero erróneo: " + XML);
+            if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
+                listFichError.add(XML);
+                listError.add(errorHandler.getMessage());
+                errorHandler.clear();
+                return;
+            }
+        }catch (SAXException e) {
+            if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
+                listFichError.add(XML);
+                listError.add(errorHandler.getMessage());
+                errorHandler.clear();
+                return;
+            }else{
+                listError.add("Error: " + e.toString());
+                listFichError.add("Fichero erróneo: " + XML);
+            }
+        }catch (IOException e) {
+            listError.add("Error: " + e.toString());
+            listFichError.add("Fichero erróneo: " + XML);
             if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
                 listFichError.add(XML);
                 listError.add(errorHandler.getMessage());
@@ -428,22 +455,25 @@ public class Sint12P2 extends HttpServlet {
      * CONSULTA 1
      *********/
     public static ArrayList<String> getCantantes() {
-
-        ArrayList<String> lista = new ArrayList<>();
+        ArrayList<String> lista = new ArrayList<String>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement(); //Element Interprete
             Node firstChild = element.getFirstChild(); //Primer hijo (#text) del elemento Interprete
-            Node nextSibling = firstChild.getNextSibling(); //Hermano -> element Nombre
-            Node firstChild1 = nextSibling.getFirstChild();
-            Node nombre = firstChild1.getNextSibling(); //Elemento NombreC o NombreG
+            while(!firstChild.getNodeName().equals("Nombre")){
+                firstChild = firstChild.getNextSibling();
+            }
+            Node nombre = firstChild.getChildNodes().item(0);
+            while(nombre.getNodeName().equals("#text")){
+                nombre = nombre.getNextSibling();
+            }
             lista.add(nombre.getTextContent());
         }
         return lista;
     }
 
     public static ArrayList<String> getAlbumCantante(String cantante) {
-        ArrayList<String> lista = new ArrayList<>();
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> lista = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<String>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
             String nombre = element.getFirstChild().getNextSibling().getFirstChild().getNextSibling().getTextContent();
@@ -466,7 +496,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public static ArrayList<String> getCancionesCantante(String cantante, String album) {
-        ArrayList<String> lista = new ArrayList<>();
+        ArrayList<String> lista = new ArrayList<String>();
 
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
@@ -478,7 +508,7 @@ public class Sint12P2 extends HttpServlet {
                     if (nombreA.equals(album) || album.equalsIgnoreCase("todos")) {
                         NodeList childNodes = canciones.item(j).getChildNodes(); //NODOS CANCION QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
 
-                        ArrayList<String> descrp = new ArrayList<>();
+                        ArrayList<String> descrp = new ArrayList<String>();
                         String nombreC = null;
                         String duracion = null;
                         String descrip = "";
@@ -512,7 +542,7 @@ public class Sint12P2 extends HttpServlet {
      *******/
     public static ArrayList<String> getAnhoAlbumes() {
 
-        ArrayList<String> lista = new ArrayList<>();
+        ArrayList<String> lista = new ArrayList<String>();
         for (Document doc : listDoc) {
             NodeList listanho = doc.getElementsByTagName("Año"); //Element Año
             for (int i = 0; i < listanho.getLength(); i++) {
@@ -524,8 +554,8 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public static ArrayList<String> getAlbumesPorAnho(String anho) {
-        ArrayList<String> lista = new ArrayList();
-        ArrayList<String> list = new ArrayList();
+        ArrayList<String> lista = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<String>();
 
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
@@ -547,7 +577,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public static ArrayList<String> getEstilo(String anho, String album) {
-        ArrayList<String> lista = new ArrayList();
+        ArrayList<String> lista = new ArrayList<String>();
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
@@ -568,7 +598,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public static ArrayList<String> getCancionesEstilo(String anho, String album, String estilo) {
-        ArrayList<String> lista = new ArrayList();
+        ArrayList<String> lista = new ArrayList<String>();
 
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
@@ -586,7 +616,7 @@ public class Sint12P2 extends HttpServlet {
 
                                 NodeList childNodes = canciones.item(a).getChildNodes(); //ELEMENTOS DE LAS CANCIONES QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
 
-                                ArrayList<String> descrp = new ArrayList<>();
+                                ArrayList<String> descrp = new ArrayList<String>();
                                 String nombreC = null;
                                 String duracion = null;
 
@@ -622,19 +652,22 @@ class XML_DTD_ErrorHandler extends DefaultHandler {
         message = null;
     }
 
-    public void warning(SAXParseException spe) {
+    public void warning(SAXParseException spe) throws SAXException {
         warning = true;
-        message = "Warning: " + spe.toString();
+        message = "Warning: " + spe.getMessage();
+        throw new SAXException();
     }
 
-    public void error(SAXParseException spe) {
+    public void error(SAXParseException spe) throws SAXException {
         error = true;
-        message = "Error: " + spe.toString();
+        message = "Error: " + spe.getMessage();
+        throw new SAXException();
     }
 
-    public void fatalerror(SAXParseException spe) {
+    public void fatalerror(SAXParseException spe) throws SAXException {
         fatalerror = true;
-        message = "Fatal Error: " + spe.toString();
+        message = "Fatal Error: " + spe.getMessage();
+        throw new SAXException();
     }
 
     public boolean hasWarning() {
