@@ -202,7 +202,7 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='anterior' value='null'>");
         out.println("<input type='hidden' name='interprete' value='" + req.getParameter("interprete") + "'>");
         if (list.isEmpty()) {
-            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+            out.println("Su consulta no ha generado ningún resultado <br>(El artista seleccionado no tiene ningún álbum)<h4>:(</h4>");
         } else {
             for (int i = 0; i < list.size(); i++) {
                 out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album1'>" + list.get(i) + "");
@@ -446,7 +446,7 @@ public class Sint12P2 extends HttpServlet {
                 listError.add(errorHandler.getMessage());
                 errorHandler.clear();
             } else {
-                listError.add("Error: " + e.getMessage());
+                listError.add("Error: " + e.toString());
                 listFichError.add("Fichero erróneo: " + XML);
             }
         }
