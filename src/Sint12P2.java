@@ -28,9 +28,9 @@ public class Sint12P2 extends HttpServlet {
 
     public void init() {
 
-       // String URL = "http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/sabina.xml";
-        String URL = "http://178.62.190.10/sabina.xml";
-      //  String URL = "sabina.xml";
+        // String URL = "http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/sabina.xml";
+        //String URL = "http://178.62.190.10/sabina.xml";
+        String URL = "sabina.xml";
         listaXML.add(URL);
         int i = 0;
         while (listaXML.size() > 0) {
@@ -44,7 +44,7 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-       doPost(req, res);
+        doPost(req, res);
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
@@ -118,7 +118,6 @@ public class Sint12P2 extends HttpServlet {
     /*****************************************************************************************************************************************/
     public void Inicio(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         imprimirInicio(out);
         out.println("<div class='error'>");
         out.println("<b>Errores encontrados</b>: <br>");
@@ -126,7 +125,7 @@ public class Sint12P2 extends HttpServlet {
             out.println("Ningún error encontrado");
         } else {
             for (int i = 0; i < listError.size(); i++) {
-                out.println(listError.get(i) + "<br>");
+                out.println((i + 1) + ". " + listError.get(i) + "<br>");
             }
         }
         out.println("<br><b>Ficheros erróneos</b>: <br>");
@@ -134,7 +133,7 @@ public class Sint12P2 extends HttpServlet {
             out.println("Ningún fichero erróneo encontrado");
         } else {
             for (int i = 0; i < listFichError.size(); i++) {
-                out.println(listFichError.get(i) + "<br>");
+                out.println((i + 1) + ". " + listFichError.get(i) + "<br>");
             }
         }
         out.println("</div>");
@@ -168,7 +167,6 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa11(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getCantantes();
         Collections.sort(list);
         imprimirInicio(out);
@@ -194,9 +192,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa21(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getAlbumCantante(req.getParameter("interprete"));
-
         imprimirInicio(out);
         out.println("<h2>Lista de canciones</h2> <h3>Cantante: " + req.getParameter("interprete") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
@@ -205,15 +201,18 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='etapa' value='21'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
         out.println("<input type='hidden' name='interprete' value='" + req.getParameter("interprete") + "'>");
-
-        for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album1'>" + list.get(i) + "");
+        if (list.isEmpty()) {
+            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album1'>" + list.get(i) + "");
+                out.println("<br>");
+            }
+            out.println("<input type='radio' value='Todos' name='album1'>Todos ");
             out.println("<br>");
+            out.println("<p>");
+            out.println("<input type='submit' value='Enviar' >");
         }
-        out.println("<input type='radio' value='Todos' name='album1'>Todos ");
-        out.println("<br>");
-        out.println("<p>");
-        out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
         out.println("<input type='submit' onclick='form.anterior.value=11' value='Atrás'>");
         out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
@@ -223,19 +222,20 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado1(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getCancionesCantante(req.getParameter("interprete"), req.getParameter("album1"));
         Collections.sort(list);
-
         imprimirInicio(out);
         out.println("<h2>Lista de canciones</h2><h3>Cantante: " + req.getParameter("interprete") + "<br>Álbum: " + req.getParameter("album1") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
         out.println("<br>");
         out.println("<ul>");
-
-        for (int i = 0; i < list.size(); i++) {
-            out.println("<il>" + list.get(i) + "</li>");
-            out.println("<br>");
+        if (list.isEmpty()) {
+            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                out.println("<il>" + list.get(i) + "</li>");
+                out.println("<br>");
+            }
         }
         out.println("</ul>");
         out.println("<br>");
@@ -256,7 +256,6 @@ public class Sint12P2 extends HttpServlet {
      * **********************************************************************************************
      ************************************************************************************************/
     public void etapa12(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-
         ArrayList<String> list = getAnhoAlbumes();
         Collections.sort(list);
         imprimirInicio(out);
@@ -265,14 +264,18 @@ public class Sint12P2 extends HttpServlet {
         out.println("<form method='POST' action='?etapa_12&consultainicial_Canciones' >");
         out.println("<input type='hidden' name='etapa' value='12'>");
         out.println("<input type='hidden' name='consultainicial' value='Canciones'>");
-        for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='anhio'>" + list.get(i) + "");
+        if (list.isEmpty()) {
+            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='anhio'>" + list.get(i) + "");
+                out.println("<br>");
+            }
+            out.println("<input type='radio' value='Todos' name='anhio'>Todos");
             out.println("<br>");
+            out.println("<p>");
+            out.println("<input type='submit' value='Enviar' >");
         }
-        out.println("<input type='radio' value='Todos' name='anhio'>Todos");
-        out.println("<br>");
-        out.println("<p>");
-        out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
         out.println("<input type='submit' onclick='form.etapa.value=0' value='Atrás'>");
         out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
@@ -282,9 +285,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa22(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getAlbumesPorAnho(req.getParameter("anhio"));
-
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "</h3>");
         out.println("<h4>Seleccione el álbum deseado:</h4>");
@@ -293,14 +294,18 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='etapa' value='22'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
         out.println("<input type='hidden' name='anhio' value='" + req.getParameter("anhio") + "'>");
-        for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album2'>" + list.get(i) + "");
+        if (list.isEmpty()) {
+            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='album2'>" + list.get(i) + "");
+                out.println("<br>");
+            }
+            out.println("<input type='radio' value='Todos' name='album2'>Todos");
             out.println("<br>");
+            out.println("<p>");
+            out.println("<input type='submit' value='Enviar' >");
         }
-        out.println("<input type='radio' value='Todos' name='album2'>Todos");
-        out.println("<br>");
-        out.println("<p>");
-        out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
         out.println("<input type='submit' onclick='form.anterior.value=12' value='Atrás'>");
         out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
@@ -310,9 +315,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void etapa32(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getEstilo(req.getParameter("anhio"), req.getParameter("album2"));
-
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "</h3>");
         out.println("<h4>Seleccione el estilo deseado:</h4>");
@@ -322,14 +325,18 @@ public class Sint12P2 extends HttpServlet {
         out.println("<input type='hidden' name='etapa' value='32'>");
         out.println("<input type='hidden' name='anterior' value='null'>");
         out.println("<input type='hidden' name='album2' value='" + req.getParameter("album2") + "'>");
-        for (int i = 0; i < list.size(); i++) {
-            out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='estilo'>" + list.get(i) + "");
+        if (list.isEmpty()) {
+            out.println("Su consulta no ha generado ningún resultado <h4>:(</h4>");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                out.println("<input type='radio' checked='' value='" + list.get(i) + "' name='estilo'>" + list.get(i) + "");
+                out.println("<br>");
+            }
+            out.println("<input type='radio' value='Todos' name='estilo'>Todos");
             out.println("<br>");
+            out.println("<p>");
+            out.println("<input type='submit' value='Enviar' >");
         }
-        out.println("<input type='radio' value='Todos' name='estilo'>Todos");
-        out.println("<br>");
-        out.println("<p>");
-        out.println("<input type='submit' value='Enviar' >");
         out.println("<br>");
         out.println("<input type='submit' onclick='form.anterior.value=22' value='Atrás'>");
         out.println("<input type='submit' onclick='form.etapa.value=0' value='Inicio'>");
@@ -339,9 +346,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void resultado2(PrintWriter out, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
-
         ArrayList<String> list = getCancionesEstilo(req.getParameter("anhio"), req.getParameter("album2"), req.getParameter("estilo"));
-
         imprimirInicio(out);
         out.println("<h2>Número de canciones</h2><h3>Año: " + req.getParameter("anhio") + "<br>Álbum: " + req.getParameter("album2") + "<br>Estilo: " + req.getParameter("estilo") + "</h3>");
         out.println("<h4>Resultado de su consulta:</h4>");
@@ -398,57 +403,53 @@ public class Sint12P2 extends HttpServlet {
 
         try {
             db = dbf.newDocumentBuilder();
-
             db.setErrorHandler(errorHandler);
-
-            if(XML.startsWith("http")) {
-               // doc = db.parse(new URL(XML).openStream(), "http://localhost:8012/sint12/");
+            // doc = db.parse(XML);
+            if (XML.startsWith("http")) {
+                // doc = db.parse(new URL(XML).openStream(), "http://localhost:8012/sint12/");
                 doc = db.parse(new URL(XML).openStream());
-                // doc = db.parse(XML);
-            }else{
+            } else {
                 //doc = db.parse(new URL("http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/"+XML).openStream(), "http://localhost:8012/sint12/");
-                doc = db.parse(new URL("http://178.62.190.10/"+XML).openStream());
+                doc = db.parse(new URL("http://178.62.190.10/" + XML).openStream());
             }
             listDoc.add(doc);
             NodeList iml = doc.getElementsByTagName("IML");
             for (int i = 0; i < iml.getLength(); i++) {
                 String IML = iml.item(i).getTextContent().trim();
+                if (!IML.startsWith("http"))
+                    IML = "http://178.62.190.10/" + IML;
                 if ((!listaXML.contains(IML) && !IML.equals("")) && !listaXMLleidos.contains(IML)) {
                     listaXML.add(IML);
                 }
             }
-
         } catch (ParserConfigurationException e) {
-            listError.add("Error: " + e.toString());
-            listFichError.add("Fichero erróneo: " + XML);
             if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
-                listFichError.add(XML);
+                listFichError.add("Fichero erróneo: " + XML);
                 listError.add(errorHandler.getMessage());
                 errorHandler.clear();
-                return;
-            }
-        }catch (SAXException e) {
-            if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
-                listFichError.add(XML);
-                listError.add(errorHandler.getMessage());
-                errorHandler.clear();
-                return;
-            }else{
+            } else {
                 listError.add("Error: " + e.toString());
                 listFichError.add("Fichero erróneo: " + XML);
             }
-        }catch (IOException e) {
-            listError.add("Error: " + e.toString());
-            listFichError.add("Fichero erróneo: " + XML);
+        } catch (SAXException e) {
             if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
-                listFichError.add(XML);
+                listFichError.add("Fichero erróneo: " + XML);
                 listError.add(errorHandler.getMessage());
                 errorHandler.clear();
-                return;
+            } else {
+                listError.add("Error: " + e.toString());
+                listFichError.add("Fichero erróneo: " + XML);
+            }
+        } catch (IOException e) {
+            if (errorHandler.hasError() || errorHandler.hasWarning() || errorHandler.hasFatalError()) {
+                listFichError.add("Fichero erróneo: " + XML);
+                listError.add(errorHandler.getMessage());
+                errorHandler.clear();
+            } else {
+                listError.add("Error: " + e.getMessage());
+                listFichError.add("Fichero erróneo: " + XML);
             }
         }
-
-
     }
 
     /***
@@ -459,11 +460,11 @@ public class Sint12P2 extends HttpServlet {
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement(); //Element Interprete
             Node firstChild = element.getFirstChild(); //Primer hijo (#text) del elemento Interprete
-            while(!firstChild.getNodeName().equals("Nombre")){
+            while (!firstChild.getNodeName().equals("Nombre")) {
                 firstChild = firstChild.getNextSibling();
             }
             Node nombre = firstChild.getChildNodes().item(0);
-            while(nombre.getNodeName().equals("#text")){
+            while (nombre.getNodeName().equals("#text")) {
                 nombre = nombre.getNextSibling();
             }
             lista.add(nombre.getTextContent());
@@ -476,14 +477,28 @@ public class Sint12P2 extends HttpServlet {
         ArrayList<String> list = new ArrayList<String>();
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
-            String nombre = element.getFirstChild().getNextSibling().getFirstChild().getNextSibling().getTextContent();
+            Node name = element.getFirstChild();
+            while (name.getNodeName().equals("#text")) {
+                name = name.getNextSibling();
+            }
+            if (name.getNodeName().equals("Nombre")) {
+                name = name.getFirstChild();
+                while (name.getNodeName().equals("#text")) {
+                    name = name.getNextSibling();
+                }
+            }
+            String nombre = name.getTextContent();
             if (nombre.equals(cantante) || cantante.equalsIgnoreCase("todos")) {
                 NodeList nombreA = doc.getElementsByTagName("NombreA");
-
                 for (int i = 0; i < nombreA.getLength(); i++) {
                     String albumes = nombreA.item(i).getTextContent();
-                    String anho = nombreA.item(i).getNextSibling().getNextSibling().getTextContent();
-                    list.add(anho+"--"+albumes);
+                    Node an = nombreA.item(i).getNextSibling();
+                    while (an.getNodeName().equals("#text")) {
+                        an = an.getNextSibling();
+                    }
+                    String anho = an.getTextContent();
+                    System.out.println("ALBUM--> " + albumes + " AÑO--> " + anho);
+                    list.add(anho + "--" + albumes);
                 }
             }
         }
@@ -497,22 +512,31 @@ public class Sint12P2 extends HttpServlet {
 
     public static ArrayList<String> getCancionesCantante(String cantante, String album) {
         ArrayList<String> lista = new ArrayList<String>();
-
         for (Document doc : listDoc) {
             Element element = doc.getDocumentElement();
-            String nombre = element.getFirstChild().getNextSibling().getFirstChild().getNextSibling().getTextContent();
+            Node firstChild = element.getFirstChild(); //Primer hijo (#text) del elemento Interprete
+            while (!firstChild.getNodeName().equals("Nombre")) {
+                firstChild = firstChild.getNextSibling();
+            }
+            Node name = firstChild.getChildNodes().item(0);
+            while (name.getNodeName().equals("#text")) {
+                name = name.getNextSibling();
+            }
+            String nombre = name.getTextContent();
             if (nombre.equalsIgnoreCase(cantante) || cantante.equalsIgnoreCase("todos")) {
                 NodeList canciones = doc.getElementsByTagName("Cancion");
                 for (int j = 0; j < canciones.getLength(); j++) {
-                    String nombreA = canciones.item(j).getParentNode().getFirstChild().getNextSibling().getTextContent();
+                    Node auxiliar = canciones.item(j).getParentNode().getFirstChild();
+                    while (!auxiliar.getNodeName().equals("NombreA")) {
+                        auxiliar = auxiliar.getNextSibling();
+                    }
+                    String nombreA = auxiliar.getTextContent();
                     if (nombreA.equals(album) || album.equalsIgnoreCase("todos")) {
                         NodeList childNodes = canciones.item(j).getChildNodes(); //NODOS CANCION QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
-
                         ArrayList<String> descrp = new ArrayList<String>();
                         String nombreC = null;
                         String duracion = null;
                         String descrip = "";
-
                         for (int i = 0; i < childNodes.getLength(); i++) {
                             if (childNodes.item(i).getNodeName().equals("#text")) { //SELECCIONAR LOS COMENTARIOS DENTRO DEL ELEMENTO CANCION
                                 String aux = childNodes.item(i).getTextContent();
@@ -525,7 +549,7 @@ public class Sint12P2 extends HttpServlet {
                             }
                         }
                         for (String cad : descrp) {
-                            descrip = descrip + cad +" ";
+                            descrip = descrip + cad + " ";
                         }
                         String cancion = nombreC + " (" + descrip + "; " + duracion + ")";
                         lista.add(cancion);
@@ -533,7 +557,6 @@ public class Sint12P2 extends HttpServlet {
                 }
             }
         }
-
         return lista;
     }
 
@@ -541,7 +564,6 @@ public class Sint12P2 extends HttpServlet {
      * CONSULTA 2
      *******/
     public static ArrayList<String> getAnhoAlbumes() {
-
         ArrayList<String> lista = new ArrayList<String>();
         for (Document doc : listDoc) {
             NodeList listanho = doc.getElementsByTagName("Año"); //Element Año
@@ -556,15 +578,22 @@ public class Sint12P2 extends HttpServlet {
     public static ArrayList<String> getAlbumesPorAnho(String anho) {
         ArrayList<String> lista = new ArrayList<String>();
         ArrayList<String> list = new ArrayList<String>();
-
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
-                String Anho = albumes.item(i).getFirstChild().getNextSibling().getNextSibling().getNextSibling().getTextContent();
+                Node aux = albumes.item(i).getFirstChild();
+                while (!aux.getNodeName().equals("Año")) {
+                    aux = aux.getNextSibling();
+                    System.out.println(aux.getTextContent());
+                }
+                String Anho = aux.getTextContent();
                 if (Anho.equals(anho) || anho.equalsIgnoreCase("todos")) {
-                    String album = albumes.item(i).getFirstChild().getNextSibling().getTextContent();
-                    String ano = albumes.item(i).getFirstChild().getNextSibling().getNextSibling().getNextSibling().getTextContent();
-                    list.add(ano+"--"+album);
+                    Node child = albumes.item(i).getFirstChild();
+                    while (!child.getNodeName().equals("NombreA")) {
+                        child = child.getNextSibling();
+                    }
+                    String album = child.getTextContent();
+                    list.add(Anho + "--" + album);
                 }
             }
         }
@@ -581,15 +610,30 @@ public class Sint12P2 extends HttpServlet {
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
-                String Anho = albumes.item(i).getFirstChild().getNextSibling().getNextSibling().getNextSibling().getTextContent();
-                String nombreA = albumes.item(i).getFirstChild().getNextSibling().getTextContent();
+                Node aux = albumes.item(i).getFirstChild();
+                while (!aux.getNodeName().equals("Año")) {
+                    aux = aux.getNextSibling();
+                }
+                String Anho = aux.getTextContent();
+                Node auxi = albumes.item(i).getFirstChild();
+                while (!auxi.getNodeName().equals("NombreA")) {
+                    auxi = auxi.getNextSibling();
+                }
+                String nombreA = auxi.getTextContent();
                 if ((Anho.equals(anho) || anho.equalsIgnoreCase("todos")) && (nombreA.equals(album) || album.equalsIgnoreCase("todos"))) {
-                    Node canciones = albumes.item(i).getLastChild().getPreviousSibling();
-                    NamedNodeMap attributes = canciones.getAttributes();
-                    for (int j = 0; j < attributes.getLength(); j++) {
-                        String estilo = attributes.item(j).getTextContent();
-                        if (!lista.contains(estilo))
-                            lista.add(estilo);
+                    Element disco = (Element) albumes.item(i);
+                    NodeList canciones = disco.getElementsByTagName("Cancion");
+                    for (int a = 0; a < canciones.getLength(); a++) {
+                        Node cancion = canciones.item(a);
+                        while (!cancion.getNodeName().equals("Cancion")) {
+                            cancion = cancion.getNextSibling();
+                        }
+                        NamedNodeMap attributes = cancion.getAttributes();
+                        for (int j = 0; j < attributes.getLength(); j++) {
+                            String estilo = attributes.item(j).getTextContent();
+                            if (!lista.contains(estilo))
+                                lista.add(estilo);
+                        }
                     }
                 }
             }
@@ -599,12 +643,19 @@ public class Sint12P2 extends HttpServlet {
 
     public static ArrayList<String> getCancionesEstilo(String anho, String album, String estilo) {
         ArrayList<String> lista = new ArrayList<String>();
-
         for (Document doc : listDoc) {
             NodeList albumes = doc.getElementsByTagName("Album");
             for (int i = 0; i < albumes.getLength(); i++) {
-                String Anho = albumes.item(i).getFirstChild().getNextSibling().getNextSibling().getNextSibling().getTextContent();
-                String nombreA = albumes.item(i).getFirstChild().getNextSibling().getTextContent();
+                Node aux = albumes.item(i).getFirstChild();
+                while (!aux.getNodeName().equals("Año")) {
+                    aux = aux.getNextSibling();
+                }
+                String Anho = aux.getTextContent();
+                Node auxi = albumes.item(i).getFirstChild();
+                while (!auxi.getNodeName().equals("NombreA")) {
+                    auxi = auxi.getNextSibling();
+                }
+                String nombreA = auxi.getTextContent();
                 if ((Anho.equals(anho) || anho.equalsIgnoreCase("todos")) && (nombreA.equals(album) || album.equalsIgnoreCase("todos"))) {
                     Element disco = (Element) albumes.item(i);
                     NodeList canciones = disco.getElementsByTagName("Cancion"); //TODAS LAS CANCIONES DEL ALBUM SELECIONADO
@@ -613,13 +664,10 @@ public class Sint12P2 extends HttpServlet {
                         for (int j = 0; j < attributes.getLength(); j++) {
                             String Estilo = attributes.item(j).getTextContent();
                             if (Estilo.equals(estilo) || estilo.equalsIgnoreCase("todos")) {
-
                                 NodeList childNodes = canciones.item(a).getChildNodes(); //ELEMENTOS DE LAS CANCIONES QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
-
                                 ArrayList<String> descrp = new ArrayList<String>();
                                 String nombreC = null;
                                 String duracion = null;
-
                                 for (int k = 0; k < childNodes.getLength(); k++) {
                                     if (childNodes.item(k).getNodeName().equals("NombreT")) { //SACAR EL NOMBRE DE LA CANCION
                                         nombreC = childNodes.item(k).getTextContent();
@@ -633,7 +681,6 @@ public class Sint12P2 extends HttpServlet {
                 }
             }
         }
-
         return lista;
     }
 }

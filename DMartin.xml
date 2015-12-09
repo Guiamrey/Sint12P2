@@ -6,11 +6,10 @@
         <NombreC>Dani Martin</NombreC>
         <Id>DMartin</Id>
     </Nombre>
-    <Nacionalidad>EspaÃ±ol</Nacionalidad>
+    <Nacionalidad>Español</Nacionalidad>
     <Album tipo="nuevo" temas="3">
 
-        <NombreA>PequeÃ±o</NombreA>
-        <AÃ±o>2012</AÃ±o>
+        <NombreA>Pequeño</NombreA><Año>2012</Año>
 
 
         <Cancion estilo="Pop-rock">
@@ -18,7 +17,7 @@
 
 
 
-            <NombreT>16 aÃ±itos</NombreT>
+            <NombreT>16 añitos</NombreT>
             Sweet sixteen
 
 
@@ -29,7 +28,7 @@
 
         <Cancion estilo="Pop-rock">
             <NombreT>Mi lamento</NombreT>
-            Y mi alegrï¿½a
+            Y mi alegría
             <Duracion>02:57</Duracion>
             <Version>
                 <Nombre>

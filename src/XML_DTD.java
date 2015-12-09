@@ -33,13 +33,19 @@ public class XML_DTD {
             listaXML.remove(0);
             listaXMLleidos.add(url);
         }
+        for (int i = 0; i < listError.size(); i++) {
+            System.out.println(listError.get(i));
+        }
+        for (int i = 0; i < listFichError.size(); i++) {
+            System.out.println(listFichError.get(i));
+        }
 /*** consulta 1 ***/
         // ArrayList list = getCantantes();
         // ArrayList list = getAlbumCantante("Pene");
-          ArrayList list = getCancionesCantante("Todos", "Todos");
+          //ArrayList list = getCancionesCantante("Todos", "Todos");
 /***consulta 2****/
         //ArrayList list = getAnhoAlbumes();
-        //ArrayList list = getAlbumesPorAnho("todos");
+        ArrayList list = getAlbumesPorAnho("todos");
        // ArrayList list = getEstilo("Todos", "todos");
        // ArrayList list = getCancionesEstilo("Todos", "Todos", "Todos");
         System.out.println("\n\n");
@@ -51,15 +57,11 @@ public class XML_DTD {
                 System.out.println(list.get(i));
             }
         }
-        for (int i = 0; i < listError.size(); i++) {
-            System.out.println(listError.get(i));
-        }
-        for (int i = 0; i < listFichError.size(); i++) {
-            System.out.println(listFichError.get(i));
-        }
+
     }
 
     public static void processIML(String XML) {
+        System.out.println(XML);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(true);
         DocumentBuilder db;
@@ -80,6 +82,8 @@ public class XML_DTD {
             NodeList iml = doc.getElementsByTagName("IML");
             for (int i = 0; i < iml.getLength(); i++) {
                 String IML = iml.item(i).getTextContent().trim();
+                /*if (!IML.startsWith("http"))
+                    IML = "http://178.62.190.10/" + IML;*/
                 if ((!listaXML.contains(IML) && !IML.equals("")) && !listaXMLleidos.contains(IML)) {
                     listaXML.add(IML);
                 }
@@ -108,7 +112,7 @@ public class XML_DTD {
                 listError.add(errorHandler.getMessage());
                 errorHandler.clear();
             } else {
-                listError.add("Error: " + e.toString());
+                listError.add("Error: " + e.getMessage());
                 listFichError.add("Fichero erróneo: " + XML);
             }
         }
@@ -159,7 +163,6 @@ public class XML_DTD {
                         an = an.getNextSibling();
                     }
                     String anho = an.getTextContent();
-                    System.out.println("ALBUM--> " + albumes + " AÑO--> " + anho);
                     list.add(anho + "--" + albumes);
                 }
             }
