@@ -28,9 +28,7 @@ public class Sint12P2 extends HttpServlet {
 
     public void init() {
 
-        // String URL = "http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/sabina.xml";
-        //String URL = "http://178.62.190.10/sabina.xml";
-        String URL = "sabina.xml";
+        String URL = "http://178.62.190.10/sabina.xml";
         listaXML.add(URL);
         int i = 0;
         while (listaXML.size() > 0) {
@@ -48,10 +46,8 @@ public class Sint12P2 extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
-
         if (req.getParameter("etapa") != null) { // si no existe el hidden "etapa" es que se ha cargado la pagina desde cero
             String etapa = req.getParameter("etapa");
             if (etapa.equals("0")) { //Comprobamos si se ha pulsado el botón de "Inicio"
@@ -404,13 +400,10 @@ public class Sint12P2 extends HttpServlet {
         try {
             db = dbf.newDocumentBuilder();
             db.setErrorHandler(errorHandler);
-            // doc = db.parse(XML);
             if (XML.startsWith("http")) {
-                // doc = db.parse(new URL(XML).openStream(), "http://localhost:8012/sint12/");
                 doc = db.parse(new URL(XML).openStream());
             } else {
-                //doc = db.parse(new URL("http://clave.det.uvigo.es:8080/~sintprof/15-16/p2/"+XML).openStream(), "http://localhost:8012/sint12/");
-                doc = db.parse(new URL("http://178.62.190.10/" + XML).openStream());
+                doc = db.parse(new URL("http:/178.62.190.10/" + XML).openStream());
             }
             listDoc.add(doc);
             NodeList iml = doc.getElementsByTagName("IML");
@@ -492,19 +485,18 @@ public class Sint12P2 extends HttpServlet {
                 NodeList nombreA = doc.getElementsByTagName("NombreA");
                 for (int i = 0; i < nombreA.getLength(); i++) {
                     String albumes = nombreA.item(i).getTextContent();
-                    Node an = nombreA.item(i).getNextSibling();
-                    while (an.getNodeName().equals("#text")) {
+                    Node an = nombreA.item(i);
+                    while (!an.getNodeName().equals("Año")) {
                         an = an.getNextSibling();
                     }
                     String anho = an.getTextContent();
-                    System.out.println("ALBUM--> " + albumes + " AÑO--> " + anho);
-                    list.add(anho + "--" + albumes);
+                    list.add(anho + "----" + albumes);
                 }
             }
         }
         Collections.sort(list);
         for (int i = 0; i < list.size(); i++) {
-            String aux[] = list.get(i).split("--");
+            String aux[] = list.get(i).split("----");
             lista.add(aux[1]);
         }
         return lista;
@@ -532,7 +524,7 @@ public class Sint12P2 extends HttpServlet {
                     }
                     String nombreA = auxiliar.getTextContent();
                     if (nombreA.equals(album) || album.equalsIgnoreCase("todos")) {
-                        NodeList childNodes = canciones.item(j).getChildNodes(); //NODOS CANCION QUE COINCIDEN CON LOS PARAMETROS SELECCIONADOS
+                        NodeList childNodes = canciones.item(j).getChildNodes(); //NODO CANCION QUE COINCIDE CON LOS PARAMETROS SELECCIONADOS
                         ArrayList<String> descrp = new ArrayList<String>();
                         String nombreC = null;
                         String duracion = null;
@@ -569,7 +561,8 @@ public class Sint12P2 extends HttpServlet {
             NodeList listanho = doc.getElementsByTagName("Año"); //Element Año
             for (int i = 0; i < listanho.getLength(); i++) {
                 String anho = listanho.item(i).getTextContent();
-                lista.add(anho);
+                if (!lista.contains(anho))
+                    lista.add(anho);
             }
         }
         return lista;
@@ -584,7 +577,6 @@ public class Sint12P2 extends HttpServlet {
                 Node aux = albumes.item(i).getFirstChild();
                 while (!aux.getNodeName().equals("Año")) {
                     aux = aux.getNextSibling();
-                    System.out.println(aux.getTextContent());
                 }
                 String Anho = aux.getTextContent();
                 if (Anho.equals(anho) || anho.equalsIgnoreCase("todos")) {
@@ -593,13 +585,13 @@ public class Sint12P2 extends HttpServlet {
                         child = child.getNextSibling();
                     }
                     String album = child.getTextContent();
-                    list.add(Anho + "--" + album);
+                    list.add(Anho + "----" + album);
                 }
             }
         }
         Collections.sort(list);
         for (int i = 0; i < list.size(); i++) {
-            String aux[] = list.get(i).split("--");
+            String aux[] = list.get(i).split("----");
             lista.add(aux[1]);
         }
         return lista;
